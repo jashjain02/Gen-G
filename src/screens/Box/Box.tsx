@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "../../components/ui/button";
 
 const navigationLinks = [
@@ -10,10 +10,30 @@ const navigationLinks = [
 
 export const Box = (): JSX.Element => {
   const logoUrl = new URL("../../../assets/images/logo.png", import.meta.url).toString();
+  const groupImageUrl = new URL("../../../assets/images/Group.png", import.meta.url).toString();
+  const maskGroupUrl = new URL("../../../assets/images/Mask group.png", import.meta.url).toString();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  // Hero carousel state
+  const carouselImages = [
+    new URL("../../../assets/images/hero1.png", import.meta.url).toString(),
+    new URL("../../../assets/images/hero2.png", import.meta.url).toString(),
+    new URL("../../../assets/images/hero3.png", import.meta.url).toString(),
+  ];
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Auto-advance carousel
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [carouselImages.length]);
+
+  const goToSlide = (index: number) => setCurrentSlide(index);
   return (
     <>
-    <header className="w-full flex justify-center py-2 sticky top-0 z-40 md:py-4 md:static">
+    <header className="w-full flex justify-center py-2 sticky top-0 z-50 md:py-4">
       <nav className="flex w-full max-w-[1280px] h-[72px] md:h-[95px] items-center gap-4 md:gap-6 pl-4 pr-4 md:pr-5 py-3 rounded-[36px] md:rounded-[999px] mx-3 md:mx-6 backdrop-blur-[2.0px] backdrop-brightness-[110%] [-webkit-backdrop-filter:blur(2.0px)_brightness(110%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.40),inset_1px_0_0_rgba(255,255,255,0.32),inset_0_-1px_1px_rgba(0,0,0,0.13),inset_-1px_0_1px_rgba(0,0,0,0.11)] bg-[linear-gradient(0deg,rgba(0,0,0,0.5)_0%,rgba(0,0,0,0.5)_100%)]">
         <div className="flex items-center flex-none">
           <img
@@ -103,7 +123,94 @@ export const Box = (): JSX.Element => {
           </div>
         </div>
     </div>
-    <main>
+
+    {/* Hero Section - full viewport behind navbar */}
+    <section className="fixed inset-0 w-full h-screen overflow-hidden z-0">
+      {/* Background Images */}
+      {carouselImages.map((image, index) => (
+        <div
+          key={index}
+          className={`absolute inset-0 transition-opacity duration-1000 ${
+            index === currentSlide ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+                <img
+                  src={image}
+                  alt={`Hero slide ${index + 1}`}
+                  className="w-full h-full object-cover"
+                />
+                <div 
+                  className="absolute inset-0" 
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(34, 27, 20, 0) 0%, rgba(25, 20, 14, 0.75) 50%, #110D08 100%)'
+                  }}
+                />
+        </div>
+      ))}
+
+      {/* Hero Content */}
+      <div className="absolute inset-0 flex items-end justify-center z-10 pb-16 sm:pb-20 md:pb-24 lg:pb-28">
+        <div className="text-center text-white px-4 sm:px-6 max-w-5xl">
+          <h1 className="mb-4 sm:mb-6 [font-family:'Poly'] font-normal italic text-[32px] sm:text-[48px] md:text-[64px] lg:text-[80px] leading-[110%] text-center">
+            <div className="leading-[110%]">
+              <div>Your Story, Your</div>
+              <div>Celebration Beautifully</div>
+              <div className="flex items-center justify-center gap-2 sm:gap-3 md:gap-4">
+                <span>Designed by</span>
+                <div className="relative inline-block">
+                  <div className="relative h-8 sm:h-12 md:h-16 lg:h-20 w-auto">
+                    {/* Base Group image */}
+                    <img 
+                      src={groupImageUrl} 
+                      alt="Group Logo" 
+                      className="absolute inset-0 h-full w-full object-contain"
+                    />
+                    {/* Mask overlay for golden effect */}
+                    <img 
+                      src={maskGroupUrl} 
+                      alt="Mask" 
+                      className="absolute inset-0 h-full w-full object-contain mix-blend-multiply"
+                      style={{
+                        filter: 'brightness(1.3) saturate(1.8) hue-rotate(45deg) drop-shadow(3px 3px 6px rgba(0,0,0,0.4))'
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </h1>
+          
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-6 sm:mb-8 [font-family:'Helvetica_Neue-Regular',Helvetica] max-w-2xl sm:max-w-3xl mx-auto leading-relaxed px-2">
+            From "Will you" to "I do" & every celebration in between - you party, we'll plan
+          </p>
+          
+          <Button className="h-[40px] sm:h-[50px] md:h-[55px] lg:h-[60px] px-6 sm:px-8 md:px-12 lg:px-16 py-0 bg-[#ff2090] rounded-[999px] border border-solid border-[#ffffff66] shadow-[0px_20px_30px_#ff209033,0px_8px_15px_#f8008033,0px_4px_10px_#ff20901a,0px_2px_10px_#ff20901a,inset_3px_3px_10px_#ffffff40] hover:bg-[#ff2090] hover:opacity-90">
+            <span className="[font-family:'Helvetica_Neue-Medium',Helvetica] font-medium text-white text-sm sm:text-base md:text-lg lg:text-xl tracking-[-0.36px] leading-[22.4px]">
+              Let's Connect
+            </span>
+          </Button>
+        </div>
+      </div>
+
+
+      {/* Dots Indicator */}
+      <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-20 flex space-x-3">
+        {carouselImages.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => goToSlide(index)}
+            className={`h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 rounded-full transition-all duration-300 ${
+              index === currentSlide 
+                ? 'bg-white w-8 sm:w-10 md:w-12' 
+                : 'bg-white/60 hover:bg-white/80'
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
+      </div>
+    </section>
+
+    <main className="relative z-10" style={{ marginTop: '100vh' }}>
       {new Array(9).fill(null).map((_, i) => (
         <section
           id={`section-${i + 1}`}
