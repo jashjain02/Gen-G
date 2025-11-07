@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "../../components/ui/button";
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 
 const navigationLinks = [
   { label: "Home", active: true },
@@ -8,10 +9,34 @@ const navigationLinks = [
   { label: "Testimonials", active: false },
 ];
 
+// Scroll animation wrapper component
+const ScrollSection: React.FC<{ children: React.ReactNode; delay?: number }> = ({ children, delay = 0 }) => {
+  const { ref, isVisible } = useScrollAnimation({
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px',
+    triggerOnce: true,
+  });
+
+  return (
+    <div
+      ref={ref}
+      className={`scroll-fade-up ${isVisible ? 'visible' : ''}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+};
+
 export const Box = (): JSX.Element => {
   const logoUrl = new URL("../../../assets/images/logo.png", import.meta.url).toString();
   const groupImageUrl = new URL("../../../assets/images/Group.png", import.meta.url).toString();
   const maskGroupUrl = new URL("../../../assets/images/Mask group.png", import.meta.url).toString();
+  const aboutMainImageUrl = new URL("../../../assets/images/about-main.png", import.meta.url).toString();
+  const aboutOverlayImageUrl = new URL("../../../assets/images/about-overlay.png", import.meta.url).toString();
+  const sectionTwoVideoUrl = new URL("../../../assets/videos/see-our-work.mp4", import.meta.url).toString();
+  const [isSectionTwoUnmuted, setIsSectionTwoUnmuted] = useState(false);
+  const sectionTwoVideoRef = React.useRef<HTMLVideoElement>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   // Hero carousel state
@@ -127,29 +152,35 @@ export const Box = (): JSX.Element => {
     {/* Hero Section - full viewport behind navbar */}
     <section className="fixed inset-0 w-full h-screen overflow-hidden z-0">
       {/* Background Images */}
-      {carouselImages.map((image, index) => (
-        <div
-          key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ${
-            index === currentSlide ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-                <img
-                  src={image}
-                  alt={`Hero slide ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
-                <div 
-                  className="absolute inset-0" 
-                  style={{
-                    background: 'linear-gradient(180deg, rgba(34, 27, 20, 0) 0%, rgba(25, 20, 14, 0.75) 50%, #110D08 100%)'
-                  }}
-                />
-        </div>
-      ))}
+      <div className="relative w-full h-full">
+        {carouselImages.map((image, index) => {
+          const offset = index - currentSlide;
+          return (
+            <div
+              key={index}
+              className="absolute inset-0 transition-transform duration-1000 ease-in-out"
+              style={{
+                transform: `translateX(${offset * 100}%)`,
+              }}
+            >
+              <img
+                src={image}
+                alt={`Hero slide ${index + 1}`}
+                className="w-full h-full object-cover"
+              />
+              <div 
+                className="absolute inset-0" 
+                style={{
+                  background: 'linear-gradient(180deg, rgba(34, 27, 20, 0) 0%, rgba(25, 20, 14, 0.75) 50%, #110D08 100%)'
+                }}
+              />
+            </div>
+          );
+        })}
+      </div>
 
       {/* Hero Content */}
-      <div className="absolute inset-0 flex items-end justify-center z-10 pb-16 sm:pb-20 md:pb-24 lg:pb-28">
+      <div className="absolute inset-0 flex items-center justify-center z-10 pb-0 lg:items-end lg:pb-36">
         <div className="text-center text-white px-4 sm:px-6 max-w-5xl">
           <h1 className="mb-4 sm:mb-6 [font-family:'Poly'] font-normal italic text-[32px] sm:text-[48px] md:text-[64px] lg:text-[80px] leading-[110%] text-center">
             <div className="leading-[110%]">
@@ -211,17 +242,182 @@ export const Box = (): JSX.Element => {
     </section>
 
     <main className="relative z-10" style={{ marginTop: '100vh' }}>
-      {new Array(9).fill(null).map((_, i) => (
-        <section
-          id={`section-${i + 1}`}
-          key={i}
-          className={`${(i + 1) % 2 === 0 ? "bg-[#f7f7f7]" : "bg-white"} h-screen flex items-center`}
+      {/* The Heart Behind the Magic Section */}
+      <ScrollSection>
+        <section className="relative bg-white w-full pt-24 sm:pt-28 md:pt-32 lg:pt-40 pb-8 md:pb-12 lg:pb-20 overflow-hidden">
+        {/* Rotating Logo anchored to section (gutter) */}
+        <div 
+          className="absolute z-30 hidden md:block logo-orbit"
+          style={{
+            width: 'clamp(150px, 18vw, 220px)',
+            height: 'clamp(150px, 18vw, 220px)',
+            top: '-50px',
+            left: 'clamp(8px, 3vw, 40px)',
+            transform: 'none',
+            opacity: 1,
+          }}
         >
-          <div className="max-w-[1280px] mx-auto px-6 text-center w-full">
-            <h3 className="text-2xl font-semibold mb-4">Section {i + 1}</h3>
-            <p className="text-gray-600">Placeholder content for section {i + 1}. Replace this with your design/content.</p>
+          <img
+            src={logoUrl}
+            alt="Logo"
+            className="w-full h-full object-contain logo-rotate"
+          />
+        </div>
+
+        {/* Mobile Logo - Smaller */}
+        <div 
+          className="absolute z-30 md:hidden logo-orbit"
+          style={{
+            width: '120px',
+            height: '120px',
+            top: '-70px',
+            left: 'clamp(8px, 5vw, 24px)',
+            transform: 'none',
+            opacity: 1,
+          }}
+        >
+          <img
+            src={logoUrl}
+            alt="Logo"
+            className="w-full h-full object-contain logo-rotate"
+          />
+        </div>
+
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16 relative">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-8 lg:gap-16 items-center relative z-20 pt-10 md:pt-4">
+            {/* Text Container */}
+            <div 
+              className="flex flex-col gap-4 md:gap-4 lg:gap-6 text-left md:text-left scroll-fade-up"
+              style={{ transitionDelay: '100ms' }}
+            >
+              <h2 
+                className="[font-family:'Times_New_Roman',Times,serif] font-bold leading-[110%] text-black md:text-[56px]"
+                style={{
+                  fontSize: 'clamp(32px, 4vw, 56px)',
+                }}
+              >
+                The Heart Behind the Magic
+              </h2>
+              
+              <p 
+                className="[font-family:'Playfair_Display',serif] italic font-normal leading-[110%] text-black md:text-[42px]"
+                style={{
+                  fontSize: 'clamp(24px, 3.5vw, 42px)',
+                }}
+              >
+                GenG by <span className="font-bold">Aisha Usman</span>
+              </p>
+              
+              <div className="space-y-4 md:space-y-3 lg:space-y-5 [font-family:'Helvetica_Neue',Helvetica,Arial,sans-serif] leading-[140%] text-[#111] md:text-[18px]" style={{ fontSize: 'clamp(14px, 1.8vw, 18px)' }}>
+                <p>
+                  At GenG by Aisha Usman, we believe every celebration deserves to feel personal — warm, beautiful, and filled with emotion.
+                </p>
+                <p>
+                  What started as a passion for creativity and details soon grew into a full-service event & wedding design studio that curates everything from cozy birthdays and bridal showers to extravagant wedding celebrations.
+                </p>
+                <p>
+                  Every color, every flower, every corner tells your story — because we don't just design events, we design feelings.
+                </p>
+              </div>
+            </div>
+
+            {/* Images */}
+            <div 
+              className="relative mx-auto md:mx-0 inline-block pr-6 md:pr-10 lg:pr-16 scroll-fade-up"
+              style={{ transitionDelay: '200ms' }}
+            >
+              {/* Bigger Image */}
+              <img
+                src={aboutMainImageUrl}
+                alt="Celebration"
+                className="rounded-sm shadow-[0_30px_60px_rgba(0,0,0,0.25)] md:ml-[122px] lg:ml-[122px] md:w-[523px] md:h-[632px]"
+                style={{
+                  width: 'clamp(280px, 35vw, 523px)',
+                  height: 'clamp(340px, 45vw, 632px)',
+                  position: 'relative',
+                  opacity: 1,
+                  transform: 'rotate(0deg)',
+                  objectFit: 'cover',
+                  display: 'block',
+                }}
+              />
+              
+              {/* Smaller Image - Overlapping on bottom-left (cropped to hide white card) */}
+              <div
+                className="absolute rounded-md overflow-hidden shadow-[0_35px_70px_rgba(0,0,0,0.35)] md:w-[244px] md:h-[320px] md:bottom-[120px] md:left-[-60px]"
+                style={{
+                  width: 'clamp(120px, 20vw, 244px)',
+                  height: 'clamp(160px, 28vw, 320px)',
+                  bottom: 'clamp(0px, 3vw, 48px)',
+                  left: 'clamp(-30px, -4vw, -60px)'
+                }}
+              >
+                <img
+                  src={aboutOverlayImageUrl}
+                  alt="Couple"
+                  className="w-full h-full object-cover"
+                  style={{
+                    clipPath: 'inset(12% 10% 14% 10% round 8px)'
+                  }}
+                />
+              </div>
+            </div>
           </div>
-        </section>
+        </div>
+      </section>
+      </ScrollSection>
+
+      {/* Remaining placeholder sections */}
+      {new Array(8).fill(null).map((_, i) => (
+        <ScrollSection key={i}>
+          {i === 0 ? (
+            <section id={`section-${i + 2}`} className="relative h-screen w-full overflow-hidden">
+              <video
+                ref={sectionTwoVideoRef}
+                className="absolute inset-0 h-full w-full object-cover"
+                src={sectionTwoVideoUrl}
+                playsInline
+                autoPlay
+                muted
+                loop
+                preload="metadata"
+              />
+              <div className={`absolute inset-0 ${isSectionTwoUnmuted ? "bg-black/25" : "bg-black/40"}`} />
+              <div className="relative z-10 h-full w-full flex items-center justify-center">
+                <button
+                  className="group inline-flex flex-col items-center justify-center gap-6 text-white"
+                  aria-label="Play Showreel"
+                  onClick={() => {
+                    const v = sectionTwoVideoRef.current;
+                    if (v) {
+                      v.muted = false;
+                      v.play().catch(() => {});
+                      setIsSectionTwoUnmuted(true);
+                    }
+                  }}
+                >
+                  <span className="grid place-items-center h-24 w-24 rounded-full border-2 border-white/70 bg-white/10 backdrop-blur-sm transition-transform duration-300 group-hover:scale-105">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" className="ml-1">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </span>
+                  <span className="[font-family:'Playfair_Display',serif] text-3xl sm:text-4xl font-semibold">See Our Work</span>
+                </button>
+              </div>
+            </section>
+          ) : (
+            <section
+              id={`section-${i + 2}`}
+              className={`${(i + 2) % 2 === 0 ? "bg-[#f7f7f7]" : "bg-white"} h-screen flex items-center`}
+            >
+              <div className="max-w-[1280px] mx-auto px-6 text-center w-full">
+                <h3 className="text-2xl font-semibold mb-4">Section {i + 2}</h3>
+                <p className="text-gray-600">Placeholder content for section {i + 2}. Replace this with your design/content.</p>
+              </div>
+            </section>
+          )}
+        </ScrollSection>
       ))}
     </main>
     </>
