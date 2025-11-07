@@ -5,6 +5,10 @@ import { HeroSection } from "./components/HeroSection";
 import { AboutSection } from "./components/AboutSection";
 import { VideoSection } from "./components/VideoSection";
 import { PlaceholderSection } from "./components/PlaceholderSection";
+import { ServicesSection } from "./components/ServicesSection";
+import { TestimonialsSection } from "./components/TestimonialsSection";
+import { ContactSection } from "./components/ContactSection";
+import { Footer } from "../../components/Footer";
 
 export const Box = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -20,10 +24,17 @@ export const Box = () => {
         <VideoSection />
         
         {/* Remaining placeholder sections */}
-        {new Array(7).fill(null).map((_, i) => (
-          <PlaceholderSection key={i} sectionNumber={i + 3} />
+        {[3, 5, 7].map((sectionNumber) => (
+          <PlaceholderSection key={sectionNumber} sectionNumber={sectionNumber} />
         ))}
+
+        <ServicesSection />
+
+        <TestimonialsSection />
       </main>
+
+      <ContactSection />
+      <Footer />
     </>
   );
 };
