@@ -1,12 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-interface UseScrollAnimationOptions {
-  threshold?: number;
-  rootMargin?: string;
-  triggerOnce?: boolean;
-}
-
-export const useScrollAnimation = (options: UseScrollAnimationOptions = {}) => {
+export const useScrollAnimation = (options = {}) => {
   const {
     threshold = 0.1,
     rootMargin = '0px 0px -100px 0px',
@@ -14,7 +8,7 @@ export const useScrollAnimation = (options: UseScrollAnimationOptions = {}) => {
   } = options;
 
   const [isVisible, setIsVisible] = useState(false);
-  const elementRef = useRef<HTMLDivElement>(null);
+  const elementRef = useRef(null);
 
   useEffect(() => {
     const element = elementRef.current;
