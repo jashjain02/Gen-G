@@ -24,7 +24,7 @@ export const HeroSection = () => {
   const goToSlide = (index) => setCurrentSlide(index);
 
   return (
-    <section className="fixed inset-0 w-full h-screen overflow-hidden z-0">
+  <section className="fixed inset-0 w-full h-screen overflow-hidden z-0">
       {/* Background Images */}
       <div className="relative w-full h-full">
         {carouselImages.map((image, index) => {
@@ -54,38 +54,28 @@ export const HeroSection = () => {
       </div>
 
       {/* Hero Content */}
-      <div className="absolute inset-0 flex items-center justify-center z-10 pb-0 lg:items-end lg:pb-36">
+      {/* Content sits below the sticky header (header heights: 72px / 95px) */}
+      <div className="absolute inset-0 flex items-center justify-center z-10 pt-[72px] md:pt-[95px]">
         <div className="text-center text-white px-4 sm:px-6 max-w-5xl">
-          <h1 className="mb-4 sm:mb-6 [font-family:'Poly'] font-normal italic text-[32px] sm:text-[48px] md:text-[64px] lg:text-[80px] leading-[110%] text-center">
+          <h1 className="mb-4 sm:mb-6 [font-family:'Poly'] font-normal italic text-[28px] sm:text-[40px] md:text-[56px] lg:text-[64px] leading-[110%] text-center">
             <div className="leading-[110%]">
               <div>Your Story, Your</div>
               <div>Celebration Beautifully</div>
               <div className="flex items-center justify-center gap-2 sm:gap-3 md:gap-4">
                 <span>Designed by</span>
-                <div className="relative inline-block">
-                  <div className="relative h-8 sm:h-12 md:h-16 lg:h-20 w-auto">
-                    {/* Base Group image */}
-                    <img 
-                      src={groupImageUrl} 
-                      alt="Group Logo" 
-                      className="absolute inset-0 h-full w-full object-contain"
-                    />
-                    {/* Mask overlay for golden effect */}
-                    <img 
-                      src={maskGroupUrl} 
-                      alt="Mask" 
-                      className="absolute inset-0 h-full w-full object-contain mix-blend-multiply"
-                      style={{
-                        filter: 'brightness(1.3) saturate(1.8) hue-rotate(45deg) drop-shadow(3px 3px 6px rgba(0,0,0,0.4))'
-                      }}
+                  {/* Inline group image sized to match the heading across breakpoints */}
+                  <div className="relative inline-flex items-center h-[28px] sm:h-[40px] md:h-[56px] lg:h-[64px]">
+                    <img
+                      src={groupImageUrl}
+                      alt="Group Logo"
+                      className="h-full w-auto object-contain align-middle translate-y-1 md:translate-y-2 lg:translate-y-2"
                     />
                   </div>
-                </div>
               </div>
             </div>
           </h1>
           
-          <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-6 sm:mb-8 [font-family:'Helvetica_Neue-Regular',Helvetica] max-w-2xl sm:max-w-3xl mx-auto leading-relaxed px-2">
+          <p className="text-sm sm:text-base md:text-lg lg:text-lg mb-6 sm:mb-8 [font-family:'Helvetica_Neue-Regular',Helvetica] max-w-2xl sm:max-w-3xl mx-auto leading-relaxed px-2">
             From "Will you" to "I do" & every celebration in between - you party, we'll plan
           </p>
           
