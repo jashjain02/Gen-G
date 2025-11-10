@@ -16,13 +16,13 @@ export const Header = ({ onMobileMenuOpen }) => {
       <nav className="flex w-full max-w-[1280px] h-[72px] md:h-[95px] items-center gap-4 md:gap-6 pl-4 pr-4 md:pr-5 py-3 rounded-[36px] md:rounded-[999px] mx-3 md:mx-6 backdrop-blur-[2.0px] backdrop-brightness-[110%] [-webkit-backdrop-filter:blur(2.0px)_brightness(110%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.40),inset_1px_0_0_rgba(255,255,255,0.32),inset_0_-1px_1px_rgba(0,0,0,0.13),inset_-1px_0_1px_rgba(0,0,0,0.11)] bg-[linear-gradient(0deg,rgba(0,0,0,0.5)_0%,rgba(0,0,0,0.5)_100%)]">
         <div className="flex items-center flex-none">
           <img
-            className="h-[56px] md:h-[90px] w-auto"
+            className="h-[56px] md:h-[80px] w-auto"
             alt="Logo"
             src={logoUrl}
           />
         </div>
 
-        <div className="hidden md:inline-flex items-center gap-10 relative flex-1 justify-center">
+  <div className="hidden md:inline-flex items-center gap-6 md:gap-10 relative flex-1 justify-center min-w-0">
           {navigationLinks.map((link, index) => (
             <button
               key={index}
@@ -30,16 +30,16 @@ export const Header = ({ onMobileMenuOpen }) => {
                 link.active
                   ? "[font-family:'Helvetica_Neue-Bold',Helvetica] font-bold"
                   : "[font-family:'Helvetica_Neue-Regular',Helvetica] font-normal"
-              } text-white text-xl tracking-[0] leading-[22.4px] whitespace-nowrap hover:opacity-80 transition-opacity`}
+              } text-white text-lg md:text-xl tracking-[0] leading-[22.4px] whitespace-nowrap hover:opacity-80 transition-opacity`}
             >
               {link.label}
             </button>
           ))}
         </div>
 
-        <div className="flex items-center gap-3 ml-auto">
+  <div className="flex items-center gap-3 ml-auto min-w-0">
           <div className="hidden md:flex flex-col items-end justify-center gap-2.5 relative flex-none">
-            <Button className="h-[46px] md:h-[55px] px-5 md:px-14 py-0 bg-[#ff2090] rounded-[999px] border border-solid border-[#ffffff66] shadow-[0px_20px_30px_#ff209033,0px_8px_15px_#f8008033,0px_4px_10px_#ff20901a,0px_2px_10px_#ff20901a,inset_3px_3px_10px_#ffffff40] hover:bg-[#ff2090] hover:opacity-90">
+            <Button className="h-[46px] md:h-[55px] px-4 md:px-8 py-0 bg-[#ff2090] rounded-[999px] border border-solid border-[#ffffff66] shadow-[0px_20px_30px_#ff209033,0px_8px_15px_#f8008033,0px_4px_10px_#ff20901a,0px_2px_10px_#ff20901a,inset_3px_3px_10px_#ffffff40] hover:bg-[#ff2090] hover:opacity-90">
               <span className="[font-family:'Helvetica_Neue-Medium',Helvetica] font-medium text-white text-sm md:text-lg tracking-[-0.36px] leading-[22.4px]">
                 Let&apos;s Connect
               </span>
