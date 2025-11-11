@@ -90,28 +90,38 @@ export const TestimonialsSection = () => {
           </div>
 
           <div className="relative mt-16 flex items-center justify-center">
-            <div className="relative w-full max-w-[1280px]" style={{ minHeight: 454 }}>
+            {/* Container height matches card height so layout is stable */}
+            <div className="relative w-full max-w-[1280px]" style={{ minHeight: 420 }}>
               {/* Render all testimonials but position them by computed offset so the active one sits in the middle and transitions smoothly */}
               {testimonials.map((item, index) => {
                 const len = testimonials.length;
                 const mid = Math.floor(len / 2);
                 // compute shortest cyclic distance from currentIndex to index
                 const raw = ((index - currentIndex + len + mid) % len) - mid;
-                const offsetPx = 421; // card width (393) + gap (~28)
+                // Card dimensions and spacing
+                const cardW = 330; // slightly narrower
+                const cardH = 420; // slightly shorter
+                const gap = 40; // space between cards
+                const offsetPx = cardW + gap;
                 const left = `calc(50% + ${raw * offsetPx}px)`;
+
                 const isActive = raw === 0;
                 const absRaw = Math.abs(raw);
-                const z = isActive ? 20 : 10 - Math.min(absRaw, 9);
-                const opacity = isActive ? 1 : absRaw === 1 ? 0.75 : 0.5;
-                const scale = isActive ? 1 : 0.95;
+                // Depth: active highest z, nearby lower, farthest lowest
+                const z = isActive ? 30 : 20 - Math.min(absRaw * 5, 15);
+                // Opacity and scale to create perspective
+                const opacity = isActive ? 1 : absRaw === 1 ? 0.78 : 0.55;
+                const scale = isActive ? 1 : absRaw === 1 ? 0.92 : 0.84;
                 const pointer = absRaw > 2 ? 'none' : 'auto';
 
                 return (
                   <article
                     key={item.name}
-                    className={`absolute top-0 -translate-x-1/2 flex-none flex h-[454px] w-[393px] flex-col rounded-[32px] p-8 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] ${buildClassName(isActive ? 'active' : absRaw === 1 ? (raw < 0 ? 'left' : 'right') : 'default')}`}
+                    className={`absolute top-0 -translate-x-1/2 flex-none flex flex-col rounded-[32px] p-8 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] ${buildClassName(isActive ? 'active' : absRaw === 1 ? (raw < 0 ? 'left' : 'right') : 'default')}`}
                     style={{
                       left,
+                      width: `${cardW}px`,
+                      height: `${cardH}px`,
                       transform: `translateX(-50%) scale(${scale})`,
                       zIndex: z,
                       opacity,
