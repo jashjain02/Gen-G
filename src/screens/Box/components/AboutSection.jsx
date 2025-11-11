@@ -49,7 +49,7 @@ export const AboutSection = () => {
 
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16 relative">
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-8 lg:gap-16 items-center relative z-20 pt-10 md:pt-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-8 lg:gap-16 items-center relative z-20 pt-md-10 md:pt-4">
             {/* Text Container */}
             <div 
               className="flex flex-col gap-4 md:gap-4 lg:gap-6 text-left md:text-left scroll-fade-up"
@@ -109,20 +109,22 @@ export const AboutSection = () => {
               
               {/* Smaller Image - Overlapping on bottom-left (cropped to hide white card) */}
               <div
-                className="absolute rounded-md overflow-hidden shadow-[0_35px_70px_rgba(0,0,0,0.35)] md:w-[244px] md:h-[320px] md:bottom-[120px] md:left-[-60px]"
+                className="absolute rounded-md overflow-hidden md:w-[244px] md:h-[320px] md:bottom-[120px] md:left-[-60px]"
                 style={{
                   width: 'clamp(120px, 20vw, 244px)',
                   height: 'clamp(160px, 28vw, 320px)',
                   bottom: 'clamp(0px, 3vw, 48px)',
-                  left: 'clamp(-30px, -4vw, -60px)'
+                  left: 'clamp(-30px, -4vw, -60px)',
+                  background: 'transparent'
                 }}
               >
                 <img
                   src={aboutOverlayImageUrl}
                   alt="Couple"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover bg-transparent"
                   style={{
-                    clipPath: 'inset(12% 10% 14% 10% round 8px)'
+                    // Removed clipPath/mask so the image shows without extra masking
+                    background: 'transparent'
                   }}
                 />
               </div>

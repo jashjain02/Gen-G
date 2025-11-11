@@ -89,20 +89,19 @@ export const ServicesSection = () => {
                     {category.title}
                   </h3>
                   <div className="space-y-2.5">
-                    {category.tagRows.map((row, rowIndex) => (
-                      <div key={`${category.title}-row-${rowIndex}`} className="flex flex-wrap gap-2.5">
-                        {row.map((tag) => (
-                          <span
-                            key={tag}
-                            className={`inline-flex items-center rounded-full px-4 py-1.5 text-sm font-semibold shadow-[0_6px_16px_rgba(0,0,0,0.06)] ${
-                              tagStyles[tag] || "bg-[#f4ecff] text-[#6a3ec6]"
-                            }`}
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    ))}
+                    {/* Single flex container that wraps all tags so they flow evenly on small screens */}
+                    <div className="flex flex-wrap gap-2.5">
+                      {([].concat(...category.tagRows)).map((tag) => (
+                        <span
+                          key={tag}
+                          className={`inline-flex items-center rounded-full px-4 py-1.5 text-sm font-semibold shadow-[0_6px_16px_rgba(0,0,0,0.06)] ${
+                            tagStyles[tag] || "bg-[#f4ecff] text-[#6a3ec6]"
+                          }`}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                   <p className="text-base leading-relaxed text-[#3e373d] [font-family:'Helvetica_Neue',Helvetica,Arial,sans-serif]">
                     {category.description}
