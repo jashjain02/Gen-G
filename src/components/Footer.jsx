@@ -37,9 +37,13 @@ export const Footer = () => {
   return (
     <footer className="relative overflow-hidden bg-[#faebd7] text-[#231f1a]">
 
-      <div className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-col gap-14 px-6 py-16">
-        <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-[1fr_auto_1fr]">
-          <div className="flex flex-col gap-6">
+      {/* Decorative corner illustrations (radial glows) similar to other sections */}
+      <div className="absolute right-[-60px] top-[-40px] hidden h-[220px] w-[220px] rounded-full bg-[radial-gradient(circle,rgba(255,32,144,0.25)_0%,rgba(255,32,144,0)_70%)] md:block" />
+      <div className="absolute left-[-80px] bottom-[-60px] hidden h-[260px] w-[260px] rounded-full bg-[radial-gradient(circle,rgba(255,179,206,0.3)_0%,rgba(255,179,206,0)_70%)] md:block" />
+
+      <div className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-col gap-14 px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-16">
+        <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-[1fr_auto_1fr]">
+          <div className="flex flex-col gap-6 min-w-0">
             <div>
               <h3 className="text-xl font-semibold text-[#13100d]">Quick Links</h3>
             </div>
@@ -72,11 +76,11 @@ export const Footer = () => {
             <img
               src={logoUrl}
               alt="GenG Logo"
-              className="h-[140px] w-[140px] object-contain"
+              className="h-[100px] sm:h-[120px] md:h-[140px] w-auto object-contain"
             />
           </div>
 
-          <div className="flex flex-col items-start gap-4 md:items-end md:text-right">
+          <div className="flex flex-col items-start gap-4 md:items-end md:text-right min-w-0">
             <h3 className="text-xl font-semibold text-[#13100d]">Contact Us</h3>
             <div className="space-y-1 text-sm md:text-base [font-family:'Helvetica_Neue',Helvetica,Arial,sans-serif]">
               <p>Based in Mumbai</p>
@@ -103,8 +107,8 @@ export const Footer = () => {
           ))}
         </div>
 
-        <div className="flex flex-col gap-6 border-t border-[#e6d8c7] pt-8 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center gap-2 text-sm md:text-base text-[#2f2720]">
+        <div className="flex flex-col gap-6 border-t border-[#e6d8c7] pt-8 md:flex-row md:items-center md:justify-between md:flex-nowrap">
+          <div className="flex flex-wrap items-center gap-2 text-sm md:text-base text-[#2f2720] min-w-0">
             <span>© 2025 GenG by Aisha Usman.</span>
             <span className="flex items-center gap-1">
               Made with
@@ -117,7 +121,7 @@ export const Footer = () => {
             href="https://wa.me/918169596140"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-[#1bb858] px-5 py-3 text-sm font-semibold text-white shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl"
+            className="inline-flex items-center gap-2 rounded-full bg-[#1bb858] px-4 py-2 text-sm font-semibold text-white shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl"
           >
             <MessageCircle className="h-5 w-5" strokeWidth={1.8} />
             WhatsApp Us

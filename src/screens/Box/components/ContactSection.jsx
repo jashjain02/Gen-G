@@ -85,7 +85,7 @@ export const ContactSection = () => {
           </form>
         </div>
 
-        <div className="pointer-events-none absolute inset-x-0 bottom-0">
+        <div className="pointer-events-none absolute inset-x-0 bottom-[-10px]">
           <img
             src={flowerBorderUrl}
             alt="Decorative floral border"

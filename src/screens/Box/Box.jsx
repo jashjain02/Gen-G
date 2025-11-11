@@ -5,6 +5,7 @@ import { HeroSection } from "./components/HeroSection";
 import { AboutSection } from "./components/AboutSection";
 import { VideoSection } from "./components/VideoSection";
 import { PlaceholderSection } from "./components/PlaceholderSection";
+import { SectionThree } from "./components/SectionThree";
 import { ServicesSection } from "./components/ServicesSection";
 import { TestimonialsSection } from "./components/TestimonialsSection";
 import { ContactSection } from "./components/ContactSection";
@@ -23,9 +24,13 @@ export const Box = () => {
         <AboutSection />
         <VideoSection />
         
-        {/* Remaining placeholder sections */}
+        {/* Remaining placeholder sections — replace section 3 with the real SectionThree component */}
         {[3, 5, 7].map((sectionNumber) => (
-          <PlaceholderSection key={sectionNumber} sectionNumber={sectionNumber} />
+          sectionNumber === 3 ? (
+            <SectionThree key={sectionNumber} />
+          ) : (
+            <PlaceholderSection key={sectionNumber} sectionNumber={sectionNumber} />
+          )
         ))}
 
         <ServicesSection />
