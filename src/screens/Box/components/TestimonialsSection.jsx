@@ -43,13 +43,13 @@ const testimonials = [
 const buildClassName = (position) => {
   switch (position) {
     case "active":
-      return "opacity-100 scale-100 shadow-[0_30px_60px_rgba(0,0,0,0.15)] border border-[#ede2d6] bg-white";
+      return "opacity-100 scale-100 shadow-[0_30px_60px_rgba(0,0,0,0.15)] border border-[#ede2d6] bg-white z-20";
     case "left":
-      return "opacity-70 scale-95 border border-[#f5ebe3] bg-white/80";
+      return "opacity-70 scale-95 border border-[#f5ebe3] bg-white/80 z-10";
     case "right":
-      return "opacity-70 scale-95 border border-[#f5ebe3] bg-white/80";
+      return "opacity-70 scale-95 border border-[#f5ebe3] bg-white/80 z-10";
     default:
-      return "opacity-0 scale-90 pointer-events-none absolute";
+      return "opacity-0 scale-90 pointer-events-none -z-10";
   }
 };
 
@@ -90,44 +90,49 @@ export const TestimonialsSection = () => {
           </div>
 
           <div className="relative mt-16 flex items-center justify-center">
-            <div className="flex w-full max-w-[1280px] justify-center gap-7 md:gap-7">
-              {testimonials.map((testimonial, index) => {
-                let position = "hidden";
-                if (index === currentIndex) position = "active";
-                else if (index === positions.prev) position = "left";
-                else if (index === positions.next) position = "right";
+            <div className="relative w-full max-w-[1280px]" style={{ minHeight: 454 }}>
+              {/* Render all testimonials but position them by computed offset so the active one sits in the middle and transitions smoothly */}
+              {testimonials.map((item, index) => {
+                const len = testimonials.length;
+                const mid = Math.floor(len / 2);
+                // compute shortest cyclic distance from currentIndex to index
+                const raw = ((index - currentIndex + len + mid) % len) - mid;
+                const offsetPx = 421; // card width (393) + gap (~28)
+                const left = `calc(50% + ${raw * offsetPx}px)`;
+                const isActive = raw === 0;
+                const absRaw = Math.abs(raw);
+                const z = isActive ? 20 : 10 - Math.min(absRaw, 9);
+                const opacity = isActive ? 1 : absRaw === 1 ? 0.75 : 0.5;
+                const scale = isActive ? 1 : 0.95;
+                const pointer = absRaw > 2 ? 'none' : 'auto';
 
                 return (
                   <article
-                    key={testimonial.name}
-                    className={`relative flex h-[454px] w-[393px] flex-col rounded-[32px] p-8 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] ${buildClassName(position)}`}
+                    key={item.name}
+                    className={`absolute top-0 -translate-x-1/2 flex-none flex h-[454px] w-[393px] flex-col rounded-[32px] p-8 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] ${buildClassName(isActive ? 'active' : absRaw === 1 ? (raw < 0 ? 'left' : 'right') : 'default')}`}
                     style={{
-                      transformOrigin: "center",
+                      left,
+                      transform: `translateX(-50%) scale(${scale})`,
+                      zIndex: z,
+                      opacity,
+                      pointerEvents: pointer,
                     }}
-                    aria-hidden={position !== "active"}
+                    aria-hidden={!isActive}
                   >
                     <div className="flex items-center gap-3">
-                      <img
-                        src={testimonial.avatar}
-                        alt={testimonial.name}
-                        className="h-12 w-12 rounded-full object-cover"
-                      />
+                      <img src={item.avatar} alt={item.name} className="h-12 w-12 rounded-full object-cover" />
                       <div>
-                        <p className="text-base font-semibold text-[#1f1b14]">{testimonial.name}</p>
-                        <p className="text-xs font-medium text-[#8d7f88] uppercase tracking-[0.16em]">
-                          {testimonial.title}
-                        </p>
+                        <p className="text-base font-semibold text-[#1f1b14]">{item.name}</p>
+                        <p className="text-xs font-medium text-[#8d7f88] uppercase tracking-[0.16em]">{item.title}</p>
                       </div>
                     </div>
 
                     <hr className="my-6 border-t border-[#ede4dc]" />
 
-                    <blockquote className="flex-1 text-base leading-relaxed text-[#2d262b]">
-                      “{testimonial.quote}”
-                    </blockquote>
+                    <blockquote className="flex-1 text-base leading-relaxed text-[#2d262b]">“{item.quote}”</blockquote>
 
                     <div className="mt-8 flex items-center justify-between text-xs font-semibold uppercase tracking-[0.18em] text-[#c8bfc9]">
-                      <span>{testimonial.title}</span>
+                      <span>{item.title}</span>
                       <Quote className="h-7 w-7 text-[#ebdfea]" strokeWidth={1.6} />
                     </div>
                   </article>
